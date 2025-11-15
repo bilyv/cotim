@@ -16,6 +16,15 @@ Key features include:
 - **Dark/Light Mode**: Toggle between themes based on user preference
 - **Secure Authentication**: Password-based and anonymous sign-in options
 
+## 📚 Documentation
+
+Comprehensive documentation is available in the `docs` directory:
+
+- [Full Documentation](docs/README.md) - Complete technical documentation
+- [API Reference](docs/API.md) - Detailed API endpoints and functions
+- [Deployment Guide](docs/DEPLOYMENT.md) - Instructions for deploying the application
+- [User Guide](docs/USER_GUIDE.md) - Instructions for using the application
+
 ## 🏗️ Project Structure
 
 ```
@@ -36,6 +45,7 @@ coti-projects/
 │   ├── SignInForm.tsx      # User sign-in form
 │   ├── SignOutButton.tsx   # Sign out button component
 │   ├── ProcessingPage.tsx  # Account processing page
+│   ├── ProfilePage.tsx     # User profile page
 │   ├── index.css           # Global styles
 │   ├── main.tsx            # Application entry point
 │   └── vite-env.d.ts       # Vite environment types
@@ -49,6 +59,11 @@ coti-projects/
 │   ├── schema.ts           # Database schema
 │   ├── steps.ts            # Step-related functions
 │   └── tsconfig.json       # Convex TypeScript configuration
+├── docs/                   # Documentation
+│   ├── README.md           # Technical documentation
+│   ├── API.md              # API reference
+│   ├── DEPLOYMENT.md       # Deployment guide
+│   └── USER_GUIDE.md       # User guide
 ├── public/                 # Static assets
 ├── .env.local              # Local environment variables
 ├── .env.production         # Production environment variables
@@ -166,4 +181,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-For support, email is ntwaribrian262@gmail.com or open an issue in the repository.
+For support, email support@coti-projects.com or open an issue in the repository.
