@@ -6,25 +6,26 @@ import { Toaster } from "sonner";
 import { ProjectList } from "./components/ProjectList";
 import { CreateProjectModal } from "./components/CreateProjectModal";
 import { useState } from "react";
+import { RegisterForm } from "./RegisterForm";
 
 export default function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-sm border-b border-slate-200 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">C</span>
+      <Authenticated>
+        <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-sm border-b border-slate-200 shadow-sm">
+          <div className="max-w-6xl mx-auto px-4 h-16 flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">C</span>
+              </div>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Coti
+              </h1>
             </div>
-            <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Coti
-            </h1>
-          </div>
-          <Authenticated>
             <SignOutButton />
-          </Authenticated>
-        </div>
-      </header>
+          </div>
+        </header>
+      </Authenticated>
 
       <main className="max-w-6xl mx-auto px-4 py-8">
         <Content />
@@ -38,6 +39,7 @@ export default function App() {
 function Content() {
   const loggedInUser = useQuery(api.auth.loggedInUser);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [authView, setAuthView] = useState<"signIn" | "signUp">("signIn");
 
   if (loggedInUser === undefined) {
     return (
@@ -50,16 +52,27 @@ function Content() {
   return (
     <div className="space-y-8">
       <Unauthenticated>
-        <div className="text-center space-y-6 max-w-md mx-auto">
-          <div className="space-y-4">
-            <h2 className="text-4xl font-bold text-slate-800">
-              Track Your Progress
-            </h2>
-            <p className="text-lg text-slate-600">
-              Create projects, add sequential steps, and watch your progress unfold step by step.
-            </p>
+        <div className="flex flex-col items-center justify-center min-h-[70vh]">
+          <div className="text-center space-y-6 w-full max-w-md">
+            <div className="space-y-4">
+              <div className="flex justify-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                  <span className="text-white font-bold text-xl">C</span>
+                </div>
+              </div>
+              <h2 className="text-3xl font-bold text-slate-800">
+                Track Your Progress
+              </h2>
+              <p className="text-lg text-slate-600">
+                Create projects, add sequential steps, and watch your progress unfold step by step.
+              </p>
+            </div>
+            {authView === "signIn" ? (
+              <SignInForm onSwitchToSignUp={() => setAuthView("signUp")} />
+            ) : (
+              <RegisterForm onSwitchToSignIn={() => setAuthView("signIn")} />
+            )}
           </div>
-          <SignInForm />
         </div>
       </Unauthenticated>
 

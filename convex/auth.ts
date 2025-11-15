@@ -1,10 +1,23 @@
 import { convexAuth, getAuthUserId } from "@convex-dev/auth/server";
 import { Password } from "@convex-dev/auth/providers/Password";
 import { Anonymous } from "@convex-dev/auth/providers/Anonymous";
-import { query } from "./_generated/server";
+import { query, mutation } from "./_generated/server";
+import { v } from "convex/values";
 
 export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
   providers: [Password, Anonymous],
+  callbacks: {
+    async signUp(args) {
+      const { provider, account, profile } = args;
+      if (provider === "password" && account?.id) {
+        // Update the user document with the name if provided
+        if (profile?.name) {
+          await args.ctx.db.patch(account.id, { name: profile.name });
+        }
+      }
+      return args;
+    },
+  },
 });
 
 export const loggedInUser = query({
@@ -18,5 +31,20 @@ export const loggedInUser = query({
       return null;
     }
     return user;
+  },
+});
+
+// Mutation to update user profile
+export const updateUserProfile = mutation({
+  args: {
+    name: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) {
+      throw new Error("Not authenticated");
+    }
+    await ctx.db.patch(userId, { name: args.name });
+    return userId;
   },
 });

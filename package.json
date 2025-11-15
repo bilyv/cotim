@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@convex-dev/auth": "^0.0.80",
+    "canvas-confetti": "^1.9.4",
     "clsx": "^2.1.1",
     "convex": "^1.24.2",
     "react": "^19.0.0",
