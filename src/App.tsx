@@ -134,6 +134,7 @@ function Content() {
   const loggedInUser = useQuery(api.auth.loggedInUser);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [authView, setAuthView] = useState<"signIn" | "signUp">("signIn");
+  const [activeTab, setActiveTab] = useState<'overview' | 'team' | 'account'>('overview');
 
   if (loggedInUser === undefined) {
     return (
@@ -171,19 +172,123 @@ function Content() {
       </Unauthenticated>
 
       <Authenticated>
-        <div className="space-y-6">
-          <div className="flex justify-between items-center">
-            <div>
-              <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100">
-                Welcome back, {loggedInUser?.name || loggedInUser?.email?.split('@')[0] || 'there'}!
-              </h2>
-              <p className="text-slate-600 dark:text-slate-300 mt-1">
-                Continue making progress on your projects
-              </p>
+        <div className="flex flex-col md:flex-row gap-6">
+          {/* Beautiful Sidebar */}
+          <div className="w-full md:w-64 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-4 h-fit">
+            <div className="space-y-1">
+              <button
+                onClick={() => setActiveTab('overview')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${activeTab === 'overview' ? 'bg-blue-50 dark:bg-slate-700 text-blue-600 dark:text-blue-400' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'}`}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                <span className="font-medium">Overview</span>
+              </button>
+              
+              <button
+                onClick={() => setActiveTab('team')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${activeTab === 'team' ? 'bg-blue-50 dark:bg-slate-700 text-blue-600 dark:text-blue-400' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'}`}
+                >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <span className="font-medium">Team</span>
+              </button>
+              
+              <button
+                onClick={() => setActiveTab('account')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${activeTab === 'account' ? 'bg-blue-50 dark:bg-slate-700 text-blue-600 dark:text-blue-400' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'}`}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                <span className="font-medium">Account</span>
+              </button>
             </div>
           </div>
-
-          <ProjectList />
+          
+          {/* Main Content Area */}
+          <div className="flex-1">
+            {activeTab === 'overview' && (
+              <div className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100">
+                      Welcome back, {loggedInUser?.name || loggedInUser?.email?.split('@')[0] || 'there'}!
+                    </h2>
+                    <p className="text-slate-600 dark:text-slate-300 mt-1">
+                      Continue making progress on your projects
+                    </p>
+                  </div>
+                </div>
+                
+                <ProjectList />
+              </div>
+            )}
+            
+            {activeTab === 'team' && (
+              <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+                <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-6">Team Management</h2>
+                <div className="text-center py-12">
+                  <div className="mx-auto w-16 h-16 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-full flex items-center justify-center mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-blue-500 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-2">Team Collaboration</h3>
+                  <p className="text-slate-600 dark:text-slate-400 max-w-md mx-auto">
+                    Collaborate with your team members on projects and track progress together.
+                  </p>
+                  <button className="mt-6 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all">
+                    Invite Team Members
+                  </button>
+                </div>
+              </div>
+            )}
+            
+            {activeTab === 'account' && (
+              <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
+                <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-6">Account Settings</h2>
+                <div className="space-y-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-xl font-bold">
+                      {loggedInUser?.name?.charAt(0) || loggedInUser?.email?.charAt(0).toUpperCase() || 'U'}
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-slate-800 dark:text-slate-200">{loggedInUser?.name || loggedInUser?.email?.split('@')[0]}</h3>
+                      <p className="text-slate-600 dark:text-slate-400 text-sm">{loggedInUser?.email}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="border-t border-slate-200 dark:border-slate-700 pt-6">
+                    <h4 className="font-medium text-slate-800 dark:text-slate-200 mb-4">Profile Information</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Name</label>
+                        <input 
+                          type="text" 
+                          defaultValue={loggedInUser?.name || ''}
+                          className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Email</label>
+                        <input 
+                          type="email" 
+                          defaultValue={loggedInUser?.email || ''}
+                          className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                        />
+                      </div>
+                    </div>
+                    <button className="mt-4 px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all">
+                      Save Changes
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Floating Action Button */}
