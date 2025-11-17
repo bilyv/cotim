@@ -5,6 +5,7 @@ import { SignOutButton } from "./SignOutButton";
 import { Toaster } from "sonner";
 import { ProjectList } from "./components/ProjectList";
 import { CreateProjectModal } from "./components/CreateProjectModal";
+import { CreateProjectTab } from "./components/CreateProjectTab";
 import { useState, useEffect } from "react";
 import { RegisterForm } from "./RegisterForm";
 import { ProfilePage } from "./ProfilePage";
@@ -134,7 +135,7 @@ function Content() {
   const loggedInUser = useQuery(api.auth.loggedInUser);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [authView, setAuthView] = useState<"signIn" | "signUp">("signIn");
-  const [activeTab, setActiveTab] = useState<'overview' | 'team' | 'account'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'team' | 'account' | 'create'>('overview');
 
   if (loggedInUser === undefined) {
     return (
@@ -187,6 +188,16 @@ function Content() {
               </button>
               
               <button
+                onClick={() => setActiveTab('create')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${activeTab === 'create' ? 'bg-blue-50 dark:bg-dark-700 text-blue-600 dark:text-blue-400' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-700'}`}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                <span className="font-medium">Create</span>
+              </button>
+              
+              <button
                 onClick={() => setActiveTab('team')}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${activeTab === 'team' ? 'bg-blue-50 dark:bg-dark-700 text-blue-600 dark:text-blue-400' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-700'}`}
                 >
@@ -218,6 +229,16 @@ function Content() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
               <span className="text-xs">Overview</span>
+            </button>
+            
+            <button
+              onClick={() => setActiveTab('create')}
+              className={`flex flex-col items-center gap-1 px-4 py-2 ${activeTab === 'create' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-700 dark:text-slate-300'}`}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              <span className="text-xs">Create</span>
             </button>
             
             <button
@@ -259,6 +280,8 @@ function Content() {
                 <ProjectList />
               </div>
             )}
+            
+            {activeTab === 'create' && <CreateProjectTab />}
             
             {activeTab === 'team' && (
               <div className="bg-white dark:bg-dark-800 rounded-xl shadow-sm border border-slate-200 dark:border-dark-700 p-6">

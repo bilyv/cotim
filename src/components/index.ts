@@ -6,3 +6,4 @@ export { ProgressCircle } from "./ProgressCircle";
 export { CreateStepForm } from "./CreateStepForm";
 export { StepList } from "./StepList";
 export { ProjectModal } from "./ProjectModal";
+export { CreateProjectTab } from "./CreateProjectTab";
