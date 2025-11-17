@@ -140,18 +140,7 @@ export function ProjectDetails() {
               ) : (
                 <div className="mt-2">
                   {project.description ? (
-                    <div className="group">
-                      <p className="text-slate-600 dark:text-slate-400 whitespace-pre-wrap">{project.description}</p>
-                      <button
-                        onClick={() => setIsEditingDescription(true)}
-                        className="mt-2 text-sm text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                          <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                        </svg>
-                        Edit
-                      </button>
-                    </div>
+                    <p className="text-slate-600 dark:text-slate-400 whitespace-pre-wrap">{project.description}</p>
                   ) : (
                     <div className="flex items-start gap-3">
                       <div className="mt-1 text-slate-400 dark:text-slate-500">
@@ -161,15 +150,6 @@ export function ProjectDetails() {
                       </div>
                       <div>
                         <p className="text-slate-500 dark:text-slate-400 italic">No description added yet</p>
-                        <button
-                          onClick={() => setIsEditingDescription(true)}
-                          className="mt-2 text-sm text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 flex items-center gap-1"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-                          </svg>
-                          Add description
-                        </button>
                       </div>
                     </div>
                   )}
@@ -194,13 +174,6 @@ export function ProjectDetails() {
                 </div>
               </div>
             </div>
-
-            <button
-              onClick={() => setShowCreateStep(true)}
-              className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all text-sm font-medium"
-            >
-              Add Step
-            </button>
           </div>
         </div>
 
@@ -234,20 +207,7 @@ export function ProjectDetails() {
             </div>
           )}
           
-          {/* Add Another Step Button */}
-          {steps && steps.length > 0 && !showCreateStep && (
-            <div className="mt-8 pt-6 border-t border-slate-200 dark:border-dark-700">
-              <button
-                onClick={() => setShowCreateStep(true)}
-                className="w-full py-3 flex items-center justify-center gap-2 text-slate-600 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition-colors rounded-lg border-2 border-dashed border-slate-300 hover:border-slate-400 dark:border-dark-600 dark:hover:border-dark-500"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-                </svg>
-                Add Another Step
-              </button>
-            </div>
-          )}
+
         </div>
       </div>
     </div>
