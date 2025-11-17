@@ -146,20 +146,8 @@ export function CreateProjectTab() {
 
         {/* Steps Section */}
         <div className="border-t border-slate-200 dark:border-dark-700 pt-6">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200">Steps</h3>
-            <button
-              type="button"
-              onClick={handleAddStep}
-              className="flex items-center gap-1 px-3 py-1.5 text-sm bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-colors dark:bg-dark-700 dark:hover:bg-dark-600 dark:text-slate-300"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-              Add Step
-            </button>
-          </div>
-
+          <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200 mb-4">Steps</h3>
+          
           <div className="space-y-4">
             {steps.map((step, index) => (
               <div key={index} className="border border-slate-200 dark:border-dark-700 rounded-lg p-4">
@@ -209,6 +197,20 @@ export function CreateProjectTab() {
                 </div>
               </div>
             ))}
+          </div>
+          
+          {/* Add Another Step Button */}
+          <div className="mt-8 pt-6 border-t border-slate-200 dark:border-dark-700">
+            <button
+              type="button"
+              onClick={handleAddStep}
+              className="w-full py-3 flex items-center justify-center gap-2 text-slate-600 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition-colors rounded-lg border-2 border-dashed border-slate-300 hover:border-slate-400 dark:border-dark-600 dark:hover:border-dark-500"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+              </svg>
+              Add Another Step
+            </button>
           </div>
         </div>
 
