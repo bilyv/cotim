@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { toast } from "sonner";
@@ -33,6 +33,9 @@ export function CreateProjectTab() {
   const [selectedColor, setSelectedColor] = useState(PROJECT_COLORS[0]);
   const [steps, setSteps] = useState<Step[]>([{ title: "", description: "", subtasks: [] }]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showDescriptionModal, setShowDescriptionModal] = useState(false);
+  const [descriptionContent, setDescriptionContent] = useState("");
+  const editorRef = useRef<HTMLDivElement>(null);
 
   const createProject = useMutation(api.projects.create);
   const createStep = useMutation(api.steps.create);
@@ -85,6 +88,35 @@ export function CreateProjectTab() {
     // In the project creation form, we don't save to the backend yet
     // The subtasks will be saved when the project is submitted
   };
+
+  // Rich text editor functions
+  const formatText = (command: string, value: string = '') => {
+    document.execCommand(command, false, value);
+    editorRef.current?.focus();
+  };
+
+  const handleSaveDescription = () => {
+    if (editorRef.current) {
+      setDescription(editorRef.current.innerHTML);
+      setDescriptionContent(editorRef.current.innerHTML);
+    }
+    setShowDescriptionModal(false);
+  };
+
+  const handleClearDescription = () => {
+    if (editorRef.current) {
+      editorRef.current.innerHTML = '';
+      setDescription('');
+      setDescriptionContent('');
+    }
+  };
+
+  // Initialize editor content when modal opens
+  useEffect(() => {
+    if (showDescriptionModal && editorRef.current) {
+      editorRef.current.innerHTML = description;
+    }
+  }, [showDescriptionModal, description]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -187,13 +219,27 @@ export function CreateProjectTab() {
           <label className="block text-sm font-medium text-slate-700 mb-1.5 dark:text-slate-300">
             Project Description
           </label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter project description (optional)"
-            rows={3}
-            className="w-full px-3 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:bg-dark-800 dark:border-dark-700 dark:text-white dark:placeholder-slate-500"
-          />
+          <button
+            type="button"
+            onClick={() => setShowDescriptionModal(true)}
+            className="w-full px-3 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:bg-dark-800 dark:border-dark-700 dark:text-white dark:placeholder-slate-500 text-left hover:bg-slate-50 dark:hover:bg-dark-700"
+          >
+            {descriptionContent ? (
+              <div className="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                <span>Project details added</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                <span>Add Project Details</span>
+              </div>
+            )}
+          </button>
         </div>
 
         {/* Project Link */}
@@ -330,6 +376,144 @@ export function CreateProjectTab() {
           </button>
         </div>
       </form>
+
+      {/* Rich Text Editor Modal */}
+      {showDescriptionModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 dark:bg-black/70">
+          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col dark:bg-dark-800">
+            {/* Modal Header */}
+            <div className="p-4 border-b border-slate-200 flex justify-between items-center dark:border-dark-700">
+              <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200">Project Details</h3>
+              <button
+                onClick={() => setShowDescriptionModal(false)}
+                className="p-2 hover:bg-slate-100 rounded-lg transition-colors dark:hover:bg-dark-700"
+              >
+                <svg className="w-5 h-5 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            {/* Editor Toolbar */}
+            <div className="p-3 border-b border-slate-200 flex flex-wrap gap-1 dark:border-dark-700">
+              <button
+                type="button"
+                onClick={() => formatText('bold')}
+                className="p-2 rounded hover:bg-slate-100 transition-colors dark:hover:bg-dark-700"
+                title="Bold"
+              >
+                <svg className="w-4 h-4 text-slate-700 dark:text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6h16M7 12h10m0 6H7" />
+                </svg>
+              </button>
+              
+              <button
+                type="button"
+                onClick={() => formatText('italic')}
+                className="p-2 rounded hover:bg-slate-100 transition-colors dark:hover:bg-dark-700"
+                title="Italic"
+              >
+                <svg className="w-4 h-4 text-slate-700 dark:text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 20l4-16m2 16l4-16M3 4h16" />
+                </svg>
+              </button>
+              
+              <button
+                type="button"
+                onClick={() => formatText('underline')}
+                className="p-2 rounded hover:bg-slate-100 transition-colors dark:hover:bg-dark-700"
+                title="Underline"
+              >
+                <svg className="w-4 h-4 text-slate-700 dark:text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                </svg>
+              </button>
+              
+              <div className="w-px bg-slate-300 mx-1 my-1 dark:bg-dark-600"></div>
+              
+              <button
+                type="button"
+                onClick={() => formatText('formatBlock', '<h1>')}
+                className="p-2 rounded hover:bg-slate-100 transition-colors text-sm font-bold dark:hover:bg-dark-700"
+                title="Heading 1"
+              >
+                H1
+              </button>
+              
+              <button
+                type="button"
+                onClick={() => formatText('formatBlock', '<h2>')}
+                className="p-2 rounded hover:bg-slate-100 transition-colors text-sm font-bold dark:hover:bg-dark-700"
+                title="Heading 2"
+              >
+                H2
+              </button>
+              
+              <button
+                type="button"
+                onClick={() => formatText('formatBlock', '<h3>')}
+                className="p-2 rounded hover:bg-slate-100 transition-colors text-sm font-bold dark:hover:bg-dark-700"
+                title="Heading 3"
+              >
+                H3
+              </button>
+              
+              <div className="w-px bg-slate-300 mx-1 my-1 dark:bg-dark-600"></div>
+              
+              <button
+                type="button"
+                onClick={() => formatText('insertUnorderedList')}
+                className="p-2 rounded hover:bg-slate-100 transition-colors dark:hover:bg-dark-700"
+                title="Bullet List"
+              >
+                <svg className="w-4 h-4 text-slate-700 dark:text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                </svg>
+              </button>
+              
+              <button
+                type="button"
+                onClick={() => formatText('insertOrderedList')}
+                className="p-2 rounded hover:bg-slate-100 transition-colors dark:hover:bg-dark-700"
+                title="Numbered List"
+              >
+                <svg className="w-4 h-4 text-slate-700 dark:text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+            </div>
+            
+            {/* Editor Content */}
+            <div className="flex-1 p-4 overflow-y-auto">
+              <div
+                ref={editorRef}
+                contentEditable
+                className="min-h-[300px] p-4 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none dark:bg-dark-700 dark:border-dark-600 dark:text-white"
+                style={{ borderRadius: '0.5rem' }}
+                onInput={(e) => {
+                  // Handle content changes if needed
+                }}
+              />
+            </div>
+            
+            {/* Modal Footer */}
+            <div className="p-4 border-t border-slate-200 flex justify-end gap-3 dark:border-dark-700">
+              <button
+                onClick={handleClearDescription}
+                className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors dark:border-dark-700 dark:text-slate-300 dark:hover:bg-dark-700"
+              >
+                Clear
+              </button>
+              <button
+                onClick={handleSaveDescription}
+                className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all"
+              >
+                Save Details
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
