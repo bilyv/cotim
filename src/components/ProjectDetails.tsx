@@ -24,6 +24,7 @@ export function ProjectDetails() {
   const [isEditingDescription, setIsEditingDescription] = useState(false);
   const [description, setDescription] = useState("");
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const [showDescriptionModal, setShowDescriptionModal] = useState(false);
   
   const project = useQuery(api.projects.get, projectId ? { projectId: projectId as Id<"projects"> } : "skip");
   const steps = useQuery(api.steps.listByProject, projectId ? { projectId: projectId as Id<"projects"> } : "skip");
@@ -117,7 +118,7 @@ export function ProjectDetails() {
         </p>
         {isLongDescription && (
           <button
-            onClick={() => setShowFullDescription(!showFullDescription)}
+            onClick={() => setShowDescriptionModal(true)}
             className="mt-2 text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium"
           >
             {showFullDescription ? "Show Less" : "Read More"}
@@ -246,6 +247,46 @@ export function ProjectDetails() {
 
         </div>
       </div>
+
+      {/* Project Description Modal */}
+      {showDescriptionModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 dark:bg-black/70">
+          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col dark:bg-dark-800">
+            {/* Modal Header */}
+            <div className="p-4 border-b border-slate-200 flex justify-between items-center dark:border-dark-700">
+              <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200">Project Description</h3>
+              <button
+                onClick={() => setShowDescriptionModal(false)}
+                className="p-2 hover:bg-slate-100 rounded-lg transition-colors dark:hover:bg-dark-700"
+              >
+                <svg className="w-5 h-5 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            {/* Modal Content with Scroll */}
+            <div className="flex-1 overflow-y-auto p-4">
+              <div className="prose max-w-none dark:prose-invert">
+                <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">{project.name}</h2>
+                <div className="whitespace-pre-wrap text-slate-600 dark:text-slate-300">
+                  {project.description}
+                </div>
+              </div>
+            </div>
+            
+            {/* Modal Footer */}
+            <div className="p-4 border-t border-slate-200 flex justify-end dark:border-dark-700">
+              <button
+                onClick={() => setShowDescriptionModal(false)}
+                className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
