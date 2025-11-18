@@ -1,6 +1,7 @@
 # Coti Project Progress Tracker
 
-![Project Screenshot](https://placehold.co/800x400?text=Project+Progress+Tracker+Dashboard)
+![Project Screenshot](images/coti%20dashboard.jpg)
+![Steps Screenshot](images/coti%20steps.jpg)
 
 A modern, full-stack web application for tracking project progress with sequential steps. Built with React, TypeScript, and Convex for a seamless serverless experience.
 
