@@ -8,12 +8,37 @@ import App from "./App";
 import { ProjectDetails } from "./components";
 import { EditProjectPage } from "./components/EditProjectPage";
 
-// Use production URL if available and we're in production mode, otherwise use the development URL
-const convexUrl = import.meta.env.PROD && import.meta.env.PROD_CONVEX_URL 
-  ? import.meta.env.PROD_CONVEX_URL 
-  : import.meta.env.VITE_CONVEX_URL;
+// Helper function to get the Convex URL with proper validation
+function getConvexUrl(): string {
+  // Use production URL if available and we're in production mode
+  if (import.meta.env.PROD && import.meta.env.PROD_CONVEX_URL) {
+    return import.meta.env.PROD_CONVEX_URL;
+  }
+  
+  // Use development URL in development mode
+  if (import.meta.env.VITE_CONVEX_URL) {
+    return import.meta.env.VITE_CONVEX_URL;
+  }
+  
+  // Provide a clear error message when neither environment variable is set
+  if (import.meta.env.PROD) {
+    throw new Error(
+      "Missing PROD_CONVEX_URL environment variable. " +
+      "Please set PROD_CONVEX_URL in your environment variables for production builds."
+    );
+  } else {
+    throw new Error(
+      "Missing VITE_CONVEX_URL environment variable. " +
+      "Please set VITE_CONVEX_URL in your .env file for development. " +
+      "Example: VITE_CONVEX_URL=http://localhost:3001"
+    );
+  }
+}
 
-const convex = new ConvexReactClient(convexUrl as string);
+// Get the Convex URL with proper validation
+const convexUrl = getConvexUrl();
+
+const convex = new ConvexReactClient(convexUrl);
 
 const router = createBrowserRouter([
   {
