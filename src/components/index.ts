@@ -11,3 +11,5 @@ export { EditProjectPage } from "./EditProjectPage";
 export { InviteTeamModal } from "./InviteTeamModal";
 export { AcceptInviteModal } from "./AcceptInviteModal";
 export { TeamMembersList } from "./TeamMembersList";
+export { FloatingNote } from "./FloatingNote";
+export { NotesList } from "./NotesList";

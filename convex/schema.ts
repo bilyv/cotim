@@ -50,6 +50,15 @@ const applicationTables = {
     acceptedAt: v.optional(v.number()),
   }).index("by_token", ["token"])
     .index("by_project", ["projectId"]),
+    
+  notes: defineTable({
+    projectId: v.id("projects"),
+    content: v.string(),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+    userId: v.id("users"),
+  }).index("by_project", ["projectId"])
+    .index("by_user", ["userId"]),
 };
 
 export default defineSchema({

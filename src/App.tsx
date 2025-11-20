@@ -2,14 +2,14 @@ import { Authenticated, Unauthenticated, useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { SignInForm } from "./SignInForm";
 import { SignOutButton } from "./SignOutButton";
-import { Toaster } from "sonner";
+import { Toaster, toast } from "sonner";
 import { ProjectList } from "./components/ProjectList";
 import { CreateProjectModal } from "./components/CreateProjectModal";
 import { CreateProjectTab } from "./components/CreateProjectTab";
 import { useState, useEffect } from "react";
 import { RegisterForm } from "./RegisterForm";
 import { ProfilePage } from "./ProfilePage";
-import { InviteTeamModal, AcceptInviteModal, TeamMembersList } from "./components";
+import { InviteTeamModal, AcceptInviteModal, TeamMembersList, FloatingNote } from "./components";
 
 export default function App() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
@@ -446,6 +446,11 @@ function Content() {
             )}
           </div>
         </div>
+
+        {/* Floating Note Component */}
+        <FloatingNote onSave={(content, projectId) => {
+          toast.success("Note saved successfully!");
+        }} />
 
         {/* Modals */}
         {showInviteModal && (

@@ -5,6 +5,7 @@ import { api } from "../../convex/_generated/api";
 import { ProgressCircle } from "./ProgressCircle";
 import { CreateStepForm } from "./CreateStepForm";
 import { StepList } from "./StepList";
+import { NotesList } from "./NotesList";
 import { Id } from "../../convex/_generated/dataModel";
 
 interface Project {
@@ -230,7 +231,7 @@ export function ProjectDetails() {
         </div>
 
         {/* Steps Section */}
-        <div className="bg-white dark:bg-dark-800 rounded-2xl shadow-sm border border-slate-200 dark:border-dark-700 p-6">
+        <div className="bg-white dark:bg-dark-800 rounded-2xl shadow-sm border border-slate-200 dark:border-dark-700 p-6 mb-8">
           <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-6">Steps</h2>
 
           {showCreateStep ? (
@@ -261,6 +262,11 @@ export function ProjectDetails() {
             </div>
           )}
 
+        </div>
+
+        {/* Notes Section */}
+        <div className="bg-white dark:bg-dark-800 rounded-2xl shadow-sm border border-slate-200 dark:border-dark-700 p-6">
+          <NotesList projectId={project._id} />
         </div>
       </div>
 

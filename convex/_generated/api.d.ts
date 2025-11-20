@@ -16,6 +16,7 @@ import type {
 import type * as auth from "../auth.js";
 import type * as http from "../http.js";
 import type * as invitations from "../invitations.js";
+import type * as notes from "../notes.js";
 import type * as projectMembers from "../projectMembers.js";
 import type * as projects from "../projects.js";
 import type * as router from "../router.js";
@@ -34,6 +35,7 @@ declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   http: typeof http;
   invitations: typeof invitations;
+  notes: typeof notes;
   projectMembers: typeof projectMembers;
   projects: typeof projects;
   router: typeof router;
