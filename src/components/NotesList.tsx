@@ -119,7 +119,6 @@ export function NotesList({ projectId }: NotesListProps) {
           const isExpanded = expandedNotes.has(note._id);
           const isLongContent = note.content.length > 150;
           const shouldTruncate = isLongContent && !isExpanded;
-          const isEditing = editingNoteId === note._id;
           
           return (
             <div 
@@ -130,91 +129,33 @@ export function NotesList({ projectId }: NotesListProps) {
                 <div className="text-xs text-slate-500 dark:text-slate-400">
                   {formatDate(note.createdAt)}
                 </div>
-                {!isEditing && (
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => handleEditNote(note)}
-                      className="text-slate-400 hover:text-blue-500 dark:text-slate-500 dark:hover:text-blue-400"
-                      aria-label="Edit note"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                      </svg>
-                    </button>
-                    <button
-                      onClick={() => handleDeleteNote(note._id)}
-                      className="text-slate-400 hover:text-red-500 dark:text-slate-500 dark:hover:text-red-400"
-                      aria-label="Delete note"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                      </svg>
-                    </button>
-                  </div>
-                )}
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleEditNote(note)}
+                    className="text-slate-400 hover:text-blue-500 dark:text-slate-500 dark:hover:text-blue-400"
+                    aria-label="Edit note"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => handleDeleteNote(note._id)}
+                    className="text-slate-400 hover:text-red-500 dark:text-slate-500 dark:hover:text-red-400"
+                    aria-label="Delete note"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
+                </div>
               </div>
               
-              {isEditing ? (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                  <div className="bg-white dark:bg-dark-800 rounded-xl shadow-xl w-full max-w-2xl">
-                    <div className="p-6">
-                      <div className="flex justify-between items-center mb-4">
-                        <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">Edit Note</h3>
-                        <button
-                          onClick={handleCancelEdit}
-                          className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                          </svg>
-                        </button>
-                      </div>
-                      
-                      <div className="mb-4">
-                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                          Note Content
-                        </label>
-                        <textarea
-                          value={editingContent}
-                          onChange={(e) => setEditingContent(e.target.value)}
-                          className="w-full p-4 border border-slate-300 dark:border-dark-600 rounded-lg bg-white dark:bg-dark-700 text-slate-900 dark:text-slate-100 resize-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-600 dark:focus:border-blue-600"
-                          rows={8}
-                          placeholder="Write your note here..."
-                        />
-                        <div className="text-right text-sm text-slate-500 dark:text-slate-400 mt-1">
-                          {editingContent.length} characters
-                        </div>
-                      </div>
-                      
-                      <div className="flex justify-end gap-3">
-                        <button
-                          onClick={handleCancelEdit}
-                          className="px-4 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-700 rounded-lg transition-colors"
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          onClick={handleSaveEdit}
-                          disabled={!editingContent.trim()}
-                          className={`px-4 py-2 rounded-lg transition-all ${
-                            !editingContent.trim()
-                              ? 'bg-slate-300 text-slate-500 cursor-not-allowed dark:bg-dark-600 dark:text-slate-400'
-                              : 'bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700'
-                          }`}
-                        >
-                          Save Changes
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="text-slate-700 dark:text-slate-300 whitespace-pre-wrap">
-                  {shouldTruncate ? truncateContent(note.content) : note.content}
-                </div>
-              )}
+              <div className="text-slate-700 dark:text-slate-300 whitespace-pre-wrap">
+                {shouldTruncate ? truncateContent(note.content) : note.content}
+              </div>
               
-              {isLongContent && !isEditing && (
+              {isLongContent && (
                 <button
                   onClick={() => toggleNoteExpansion(note._id)}
                   className="mt-2 text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium"
@@ -226,6 +167,50 @@ export function NotesList({ projectId }: NotesListProps) {
           );
         })}
       </div>
+      
+      {/* Edit Note Modal */}
+      {editingNoteId && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 dark:bg-black/70">
+          <div className="bg-white rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col dark:bg-dark-800">
+            <div className="p-4 border-b border-slate-200 flex justify-between items-center dark:border-dark-700">
+              <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200">Edit Note</h3>
+              <button
+                onClick={handleCancelEdit}
+                className="p-2 hover:bg-slate-100 rounded-lg transition-colors dark:hover:bg-dark-700"
+              >
+                <svg className="w-5 h-5 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-4">
+              <textarea
+                value={editingContent}
+                onChange={(e) => setEditingContent(e.target.value)}
+                className="w-full h-40 p-3 border border-slate-300 dark:border-dark-600 rounded-lg bg-white dark:bg-dark-700 text-slate-900 dark:text-slate-100 resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Write your note here..."
+                autoFocus
+              />
+            </div>
+
+            <div className="p-4 border-t border-slate-200 flex justify-end dark:border-dark-700">
+              <button
+                onClick={handleCancelEdit}
+                className="px-3 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-700 rounded-lg transition-colors mr-2"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveEdit}
+                className="px-3 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all shadow-md"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
