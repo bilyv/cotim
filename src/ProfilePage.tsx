@@ -153,7 +153,7 @@ export function ProfilePage({ onClose }: { onClose: () => void }) {
               <div>
                 <div className="flex justify-between text-sm mb-1">
                   <span className="text-slate-700 dark:text-slate-300">Overall Progress</span>
-                  <span className="text-slate-700 dark:text-slate-300">{completionRate}%</span>
+                  <span className="text-slate-700 dark:text-slate-300">{completionRate.toFixed(1)}%</span>
                 </div>
                 <div className="w-full bg-slate-200 rounded-full h-2 dark:bg-dark-700">
                   <div

@@ -14,6 +14,8 @@ interface Project {
   totalSteps: number;
   completedSteps: number;
   progress: number;
+  role?: "owner" | "member";
+  permission?: "view" | "modify" | null;
 }
 
 interface ProjectModalProps {
@@ -24,6 +26,9 @@ interface ProjectModalProps {
 export function ProjectModal({ project, onClose }: ProjectModalProps) {
   const [showCreateStep, setShowCreateStep] = useState(false);
   const steps = useQuery(api.steps.listByProject, { projectId: project._id });
+
+  // Check if user has modify permission
+  const canModify = project.role === "owner" || project.permission === "modify";
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 dark:bg-black/70">
@@ -53,7 +58,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             <div className="flex items-center gap-4">
               <ProgressCircle 
                 progress={project.progress} 
-                size={60}
+                size={72}
                 color={project.color}
               />
               <div>
@@ -61,7 +66,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                   {project.completedSteps} of {project.totalSteps} steps completed
                 </div>
                 <div className="text-slate-600 dark:text-slate-400">
-                  {project.progress}% progress
+                  {project.progress.toFixed(1)}% progress
                 </div>
               </div>
             </div>
@@ -84,7 +89,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               onSuccess={() => setShowCreateStep(false)}
             />
           ) : (
-            <StepList steps={steps} projectColor={project.color} />
+            <StepList steps={steps} projectColor={project.color} canModify={canModify} />
           )}
         </div>
       </div>

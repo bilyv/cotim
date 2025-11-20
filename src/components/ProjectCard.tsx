@@ -87,7 +87,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
           <div className="flex items-center gap-3">
             <ProgressCircle 
               progress={project.progress} 
-              size={48}
+              size={64} // Increased from 48 to 64
               color={project.color}
             />
             <div>

@@ -1,7 +1,6 @@
 import { v } from "convex/values";
-import { mutation, query, internalQuery } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 import { getAuthUserId } from "@convex-dev/auth/server";
-import { internal } from "./_generated/api";
 
 export const list = query({
   args: {},
@@ -38,15 +37,36 @@ export const list = query({
           .withIndex("by_project", (q) => q.eq("projectId", project._id))
           .collect();
 
+        // Get all subtasks for all steps in this project
+        let totalSubtasks = 0;
+        let completedSubtasks = 0;
+        
+        for (const step of steps) {
+          const subtasks = await ctx.db
+            .query("subtasks")
+            .withIndex("by_step", (q) => q.eq("stepId", step._id))
+            .collect();
+          
+          totalSubtasks += subtasks.length;
+          completedSubtasks += subtasks.filter(subtask => subtask.isCompleted).length;
+        }
+
         const totalSteps = steps.length;
         const completedSteps = steps.filter(step => step.isCompleted).length;
-        const progress = totalSteps > 0 ? (completedSteps / totalSteps) * 100 : 0;
+        
+        // Calculate progress: 50% weight for steps, 50% weight for subtasks
+        let progress = 0;
+        if (totalSteps > 0 || totalSubtasks > 0) {
+          const stepProgress = totalSteps > 0 ? (completedSteps / totalSteps) : 0;
+          const subtaskProgress = totalSubtasks > 0 ? (completedSubtasks / totalSubtasks) : 0;
+          progress = ((stepProgress + subtaskProgress) / 2) * 100;
+        }
 
         return {
           ...project,
           totalSteps,
           completedSteps,
-          progress: Math.round(progress),
+          progress: Math.round(progress * 100) / 100, // Keep 2 decimal places
           role: "owner" as const,
         };
       })
@@ -59,15 +79,36 @@ export const list = query({
           .withIndex("by_project", (q) => q.eq("projectId", project._id))
           .collect();
 
+        // Get all subtasks for all steps in this project
+        let totalSubtasks = 0;
+        let completedSubtasks = 0;
+        
+        for (const step of steps) {
+          const subtasks = await ctx.db
+            .query("subtasks")
+            .withIndex("by_step", (q) => q.eq("stepId", step._id))
+            .collect();
+          
+          totalSubtasks += subtasks.length;
+          completedSubtasks += subtasks.filter(subtask => subtask.isCompleted).length;
+        }
+
         const totalSteps = steps.length;
         const completedSteps = steps.filter(step => step.isCompleted).length;
-        const progress = totalSteps > 0 ? (completedSteps / totalSteps) * 100 : 0;
+        
+        // Calculate progress: 50% weight for steps, 50% weight for subtasks
+        let progress = 0;
+        if (totalSteps > 0 || totalSubtasks > 0) {
+          const stepProgress = totalSteps > 0 ? (completedSteps / totalSteps) : 0;
+          const subtaskProgress = totalSubtasks > 0 ? (completedSubtasks / totalSubtasks) : 0;
+          progress = ((stepProgress + subtaskProgress) / 2) * 100;
+        }
 
         return {
           ...project,
           totalSteps,
           completedSteps,
-          progress: Math.round(progress),
+          progress: Math.round(progress * 100) / 100, // Keep 2 decimal places
           role: "member" as const,
           permission: project.memberPermission,
         };
@@ -112,15 +153,36 @@ export const get = query({
       .withIndex("by_project", (q) => q.eq("projectId", project._id))
       .collect();
 
+    // Get all subtasks for all steps in this project
+    let totalSubtasks = 0;
+    let completedSubtasks = 0;
+    
+    for (const step of steps) {
+      const subtasks = await ctx.db
+        .query("subtasks")
+        .withIndex("by_step", (q) => q.eq("stepId", step._id))
+        .collect();
+      
+      totalSubtasks += subtasks.length;
+      completedSubtasks += subtasks.filter(subtask => subtask.isCompleted).length;
+    }
+
     const totalSteps = steps.length;
     const completedSteps = steps.filter(step => step.isCompleted).length;
-    const progress = totalSteps > 0 ? (completedSteps / totalSteps) * 100 : 0;
+    
+    // Calculate progress: 50% weight for steps, 50% weight for subtasks
+    let progress = 0;
+    if (totalSteps > 0 || totalSubtasks > 0) {
+      const stepProgress = totalSteps > 0 ? (completedSteps / totalSteps) : 0;
+      const subtaskProgress = totalSubtasks > 0 ? (completedSubtasks / totalSubtasks) : 0;
+      progress = ((stepProgress + subtaskProgress) / 2) * 100;
+    }
 
     return {
       ...project,
       totalSteps,
       completedSteps,
-      progress: Math.round(progress),
+      progress: Math.round(progress * 100) / 100, // Keep 2 decimal places
       role: isOwner ? ("owner" as const) : ("member" as const),
       permission: isOwner ? null : permission,
     };
@@ -161,23 +223,8 @@ export const update = mutation({
     if (!userId) throw new Error("Not authenticated");
 
     const project = await ctx.db.get(args.projectId);
-    if (!project) throw new Error("Project not found");
-
-    // Check if user is owner
-    const isOwner = project.userId === userId;
-
-    // If not owner, check if user has modify permission
-    if (!isOwner) {
-      const membership = await ctx.db
-        .query("projectMembers")
-        .withIndex("by_project_and_user", (q) =>
-          q.eq("projectId", args.projectId).eq("userId", userId)
-        )
-        .unique();
-
-      if (!membership || membership.permission !== "modify") {
-        throw new Error("Unauthorized. You need modify permission to update this project");
-      }
+    if (!project || project.userId !== userId) {
+      throw new Error("Project not found or unauthorized");
     }
 
     const updatedFields: any = {};
@@ -206,17 +253,17 @@ export const remove = mutation({
       .query("steps")
       .withIndex("by_project", (q) => q.eq("projectId", args.projectId))
       .collect();
-
+    
     for (const step of steps) {
       // Call the steps.remove mutation for each step to ensure subtasks are deleted
       await ctx.db.delete(step._id);
-
+      
       // Delete all subtasks associated with this step
       const subtasks = await ctx.db
         .query("subtasks")
         .withIndex("by_step", (q) => q.eq("stepId", step._id))
         .collect();
-
+      
       for (const subtask of subtasks) {
         await ctx.db.delete(subtask._id);
       }

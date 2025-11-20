@@ -43,7 +43,7 @@ export function ProgressCircle({ progress, size = 40, color = "#3b82f6" }: Progr
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">
         <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-          {progress}%
+          {progress.toFixed(1)}% {/* Changed to show 1 decimal place */}
         </span>
       </div>
     </div>

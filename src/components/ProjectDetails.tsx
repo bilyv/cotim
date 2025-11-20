@@ -198,7 +198,7 @@ export function ProjectDetails() {
                   {project.completedSteps} of {project.totalSteps} steps completed
                 </div>
                 <div className="text-slate-600 dark:text-slate-400">
-                  {project.progress}% progress
+                  {project.progress.toFixed(1)}% progress
                 </div>
               </div>
             </div>
