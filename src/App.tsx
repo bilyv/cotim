@@ -88,9 +88,6 @@ export default function App() {
                   <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
                     U
                   </div>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                  </svg>
                 </button>
 
                 {/* Profile Dropdown Menu */}
@@ -102,14 +99,19 @@ export default function App() {
                     <button
                       className="w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-700 transition-colors"
                       onClick={() => {
-                        setShowProfilePage(true);
+                        setShowProfilePage(false);
                         setShowProfileMenu(false);
+                        // Redirect to account tab
+                        const contentElement = document.querySelector('.space-y-8');
+                        if (contentElement) {
+                          const accountButton = contentElement.querySelector('button[title="Account"]');
+                          if (accountButton) {
+                            (accountButton as HTMLButtonElement).click();
+                          }
+                        }
                       }}
                     >
                       View Profile
-                    </button>
-                    <button className="w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-700 transition-colors">
-                      Account Settings
                     </button>
                     <div className="border-t border-slate-100 dark:border-dark-700 my-1"></div>
                     <SignOutButton />
