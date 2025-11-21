@@ -272,8 +272,8 @@ export function ProjectDetails() {
 
       {/* Project Description Modal */}
       {showDescriptionModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 dark:bg-black/70">
-          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col dark:bg-dark-800">
+        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50 p-4 dark:bg-black/40">
+          <div className="bg-white/90 backdrop-blur-xl rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col dark:bg-dark-800/90 border border-white/20 dark:border-white/10 shadow-2xl">
             {/* Modal Header */}
             <div className="p-4 border-b border-slate-200 flex justify-between items-center dark:border-dark-700">
               <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200">Project Description</h3>

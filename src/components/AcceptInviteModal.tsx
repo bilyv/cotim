@@ -49,8 +49,8 @@ export function AcceptInviteModal({ invitationToken, onClose, onAccept }: Accept
 
     if (invitationDetails === undefined) {
         return (
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 dark:bg-black/70">
-                <div className="bg-white rounded-xl p-8 max-w-md w-full dark:bg-dark-800 shadow-lg">
+            <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50 p-4 dark:bg-black/40">
+                <div className="bg-white/90 backdrop-blur-xl rounded-xl p-8 max-w-md w-full dark:bg-dark-800/90 shadow-2xl border border-white/20 dark:border-white/10">
                     <div className="flex justify-center">
                         <div className="animate-spin rounded-full h-12 w-12 border-2 border-blue-500 border-t-transparent"></div>
                     </div>
@@ -61,8 +61,8 @@ export function AcceptInviteModal({ invitationToken, onClose, onAccept }: Accept
 
     if (!invitationDetails || invitationDetails.status !== "pending") {
         return (
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 dark:bg-black/70">
-                <div className="bg-white rounded-xl p-8 max-w-md w-full dark:bg-dark-800 shadow-lg text-center">
+            <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50 p-4 dark:bg-black/40">
+                <div className="bg-white/90 backdrop-blur-xl rounded-xl p-8 max-w-md w-full dark:bg-dark-800/90 shadow-2xl border border-white/20 dark:border-white/10 text-center">
                     <div className="mx-auto w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4">
                         <svg className="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -87,8 +87,8 @@ export function AcceptInviteModal({ invitationToken, onClose, onAccept }: Accept
 
     if (invitationDetails.isExpired) {
         return (
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 dark:bg-black/70">
-                <div className="bg-white rounded-xl p-8 max-w-md w-full dark:bg-dark-800 shadow-lg text-center">
+            <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50 p-4 dark:bg-black/40">
+                <div className="bg-white/90 backdrop-blur-xl rounded-xl p-8 max-w-md w-full dark:bg-dark-800/90 shadow-2xl border border-white/20 dark:border-white/10 text-center">
                     <div className="mx-auto w-16 h-16 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center mb-4">
                         <svg className="w-8 h-8 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -113,8 +113,8 @@ export function AcceptInviteModal({ invitationToken, onClose, onAccept }: Accept
 
     if (showSuccess) {
         return (
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 dark:bg-black/70">
-                <div className="bg-white rounded-xl p-8 max-w-md w-full dark:bg-dark-800 shadow-lg text-center">
+            <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50 p-4 dark:bg-black/40">
+                <div className="bg-white/90 backdrop-blur-xl rounded-xl p-8 max-w-md w-full dark:bg-dark-800/90 shadow-2xl border border-white/20 dark:border-white/10 text-center">
                     <div className="mx-auto w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4 animate-bounce">
                         <svg className="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -132,8 +132,8 @@ export function AcceptInviteModal({ invitationToken, onClose, onAccept }: Accept
     }
 
     return (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 dark:bg-black/70">
-            <div className="bg-white rounded-xl p-6 max-w-md w-full dark:bg-dark-800 shadow-lg">
+        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50 p-4 dark:bg-black/40">
+            <div className="bg-white/90 backdrop-blur-xl rounded-xl p-6 max-w-md w-full dark:bg-dark-800/90 shadow-2xl border border-white/20 dark:border-white/10">
                 <div className="flex justify-between items-center mb-5">
                     <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-200">
                         Team Invitation
@@ -170,8 +170,8 @@ export function AcceptInviteModal({ invitationToken, onClose, onAccept }: Accept
                         <div className="flex items-center gap-2 text-sm">
                             <span className="text-slate-600 dark:text-slate-400">Permission:</span>
                             <span className={`px-2 py-1 rounded-md text-xs font-medium ${invitationDetails.permission === "modify"
-                                    ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
-                                    : "bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-300"
+                                ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                                : "bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-300"
                                 }`}>
                                 {invitationDetails.permission === "modify" ? "Can Modify" : "View Only"}
                             </span>

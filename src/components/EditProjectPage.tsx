@@ -457,8 +457,8 @@ export function EditProjectPage() {
                 type="button"
                 onClick={() => setSelectedColor(color)}
                 className={`w-8 h-8 rounded-lg transition-all ${selectedColor === color
-                    ? "ring-2 ring-offset-1 ring-slate-400 dark:ring-slate-500"
-                    : "hover:scale-105"
+                  ? "ring-2 ring-offset-1 ring-slate-400 dark:ring-slate-500"
+                  : "hover:scale-105"
                   }`}
                 style={{ backgroundColor: color }}
                 aria-label={`Select color ${color}`}
@@ -518,10 +518,10 @@ export function EditProjectPage() {
               <div
                 key={index}
                 className={`border border-slate-200 dark:border-dark-700 rounded-lg p-3 transition-all duration-200 ease-in-out transform ${draggedIndex === index
-                    ? "bg-blue-50 dark:bg-blue-900/20 opacity-50 scale-95 shadow-md"
-                    : dropTargetIndex === index && draggedIndex !== null
-                      ? "bg-blue-100 dark:bg-blue-900/30 scale-105 shadow-lg"
-                      : "bg-white dark:bg-dark-800"
+                  ? "bg-blue-50 dark:bg-blue-900/20 opacity-50 scale-95 shadow-md"
+                  : dropTargetIndex === index && draggedIndex !== null
+                    ? "bg-blue-100 dark:bg-blue-900/30 scale-105 shadow-lg"
+                    : "bg-white dark:bg-dark-800"
                   } ${dropTargetIndex === index && draggedIndex !== null
                     ? "ring-2 ring-blue-500 ring-opacity-50"
                     : ""
@@ -669,8 +669,8 @@ export function EditProjectPage() {
 
       {/* Rich Text Editor Modal */}
       {showDescriptionModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 dark:bg-black/70">
-          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col dark:bg-dark-800">
+        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50 p-4 dark:bg-black/40">
+          <div className="bg-white/90 backdrop-blur-xl rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col dark:bg-dark-800/90 border border-white/20 dark:border-white/10 shadow-2xl">
             {/* Modal Header */}
             <div className="p-4 border-b border-slate-200 flex justify-between items-center dark:border-dark-700">
               <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200">Project Details</h3>

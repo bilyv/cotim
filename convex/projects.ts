@@ -40,20 +40,20 @@ export const list = query({
         // Get all subtasks for all steps in this project
         let totalSubtasks = 0;
         let completedSubtasks = 0;
-        
+
         for (const step of steps) {
           const subtasks = await ctx.db
             .query("subtasks")
             .withIndex("by_step", (q) => q.eq("stepId", step._id))
             .collect();
-          
+
           totalSubtasks += subtasks.length;
           completedSubtasks += subtasks.filter(subtask => subtask.isCompleted).length;
         }
 
         const totalSteps = steps.length;
         const completedSteps = steps.filter(step => step.isCompleted).length;
-        
+
         // Calculate progress: steps are automatically completed when all subtasks are done,
         // so we only need to count subtasks for progress if they exist, otherwise count steps
         let progress = 0;
@@ -85,20 +85,20 @@ export const list = query({
         // Get all subtasks for all steps in this project
         let totalSubtasks = 0;
         let completedSubtasks = 0;
-        
+
         for (const step of steps) {
           const subtasks = await ctx.db
             .query("subtasks")
             .withIndex("by_step", (q) => q.eq("stepId", step._id))
             .collect();
-          
+
           totalSubtasks += subtasks.length;
           completedSubtasks += subtasks.filter(subtask => subtask.isCompleted).length;
         }
 
         const totalSteps = steps.length;
         const completedSteps = steps.filter(step => step.isCompleted).length;
-        
+
         // Calculate progress: steps are automatically completed when all subtasks are done,
         // so we only need to count subtasks for progress if they exist, otherwise count steps
         let progress = 0;
@@ -162,20 +162,20 @@ export const get = query({
     // Get all subtasks for all steps in this project
     let totalSubtasks = 0;
     let completedSubtasks = 0;
-    
+
     for (const step of steps) {
       const subtasks = await ctx.db
         .query("subtasks")
         .withIndex("by_step", (q) => q.eq("stepId", step._id))
         .collect();
-      
+
       totalSubtasks += subtasks.length;
       completedSubtasks += subtasks.filter(subtask => subtask.isCompleted).length;
     }
 
     const totalSteps = steps.length;
     const completedSteps = steps.filter(step => step.isCompleted).length;
-    
+
     // Calculate progress: steps are automatically completed when all subtasks are done,
     // so we only need to count subtasks for progress if they exist, otherwise count steps
     let progress = 0;
@@ -262,17 +262,17 @@ export const remove = mutation({
       .query("steps")
       .withIndex("by_project", (q) => q.eq("projectId", args.projectId))
       .collect();
-    
+
     for (const step of steps) {
       // Call the steps.remove mutation for each step to ensure subtasks are deleted
       await ctx.db.delete(step._id);
-      
+
       // Delete all subtasks associated with this step
       const subtasks = await ctx.db
         .query("subtasks")
         .withIndex("by_step", (q) => q.eq("stepId", step._id))
         .collect();
-      
+
       for (const subtask of subtasks) {
         await ctx.db.delete(subtask._id);
       }

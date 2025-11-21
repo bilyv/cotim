@@ -31,8 +31,8 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
   const canModify = project.role === "owner" || project.permission === "modify";
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 dark:bg-black/70">
-      <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col dark:bg-dark-800">
+    <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50 p-4 dark:bg-black/40">
+      <div className="bg-white/90 backdrop-blur-xl rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col dark:bg-dark-800/90 border border-white/20 dark:border-white/10 shadow-2xl">
         {/* Header */}
         <div className="p-6 border-b border-slate-200 dark:border-dark-700">
           <div className="flex justify-between items-start mb-4">
@@ -56,8 +56,8 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <ProgressCircle 
-                progress={project.progress} 
+              <ProgressCircle
+                progress={project.progress}
                 size={72}
                 color={project.color}
               />

@@ -28,12 +28,12 @@ export function ProjectCard({ project }: ProjectCardProps) {
   const getBackgroundColor = (hexColor: string) => {
     // Remove # if present
     const cleanHex = hexColor.replace('#', '');
-    
+
     // Parse r, g, b values
     const r = parseInt(cleanHex.substring(0, 2), 16);
     const g = parseInt(cleanHex.substring(2, 4), 16);
     const b = parseInt(cleanHex.substring(4, 6), 16);
-    
+
     // Return rgba with higher opacity (increased from 0.05 to 0.15)
     return `rgba(${r}, ${g}, ${b}, 0.15)`;
   };
@@ -59,9 +59,9 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
   return (
     <>
-      <div 
+      <div
         className="rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer border border-slate-100 hover:border-slate-200 group dark:border-dark-700 dark:hover:border-dark-600"
-        style={{ 
+        style={{
           backgroundColor: getBackgroundColor(project.color),
         }}
         onClick={() => navigate(`/project/${project._id}`)}
@@ -92,8 +92,8 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <ProgressCircle 
-              progress={project.progress} 
+            <ProgressCircle
+              progress={project.progress}
               size={64} // Increased from 48 to 64
               color={project.color}
             />
@@ -106,7 +106,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
               </div>
             </div>
           </div>
-          
+
           <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/50 dark:bg-dark-700/50 group-hover:bg-white dark:group-hover:bg-dark-600 transition-colors">
             <svg className="w-4 h-4 text-slate-600 dark:text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -116,8 +116,8 @@ export function ProjectCard({ project }: ProjectCardProps) {
       </div>
 
       {showDeleteConfirm && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 dark:bg-black/70">
-          <div className="bg-white rounded-2xl p-6 max-w-sm w-full dark:bg-dark-800">
+        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50 p-4 dark:bg-black/40">
+          <div className="bg-white/90 backdrop-blur-xl rounded-2xl p-6 max-w-sm w-full dark:bg-dark-800/90 border border-white/20 dark:border-white/10 shadow-2xl">
             <h3 className="text-lg font-semibold text-slate-800 mb-2 dark:text-slate-100">
               Delete Project
             </h3>

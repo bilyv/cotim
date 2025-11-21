@@ -54,8 +54,8 @@ export function InviteTeamModal({ onClose }: InviteTeamModalProps) {
     };
 
     return (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 dark:bg-black/70">
-            <div className="bg-white rounded-xl p-6 max-w-md w-full dark:bg-dark-800 shadow-lg">
+        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50 p-4 dark:bg-black/40">
+            <div className="bg-white/90 backdrop-blur-xl rounded-xl p-6 max-w-md w-full dark:bg-dark-800/90 shadow-2xl border border-white/20 dark:border-white/10">
                 <div className="flex justify-between items-center mb-5">
                     <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-200">
                         Invite Team Members

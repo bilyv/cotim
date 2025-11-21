@@ -84,7 +84,7 @@ export function FloatingNote({ onSave }: FloatingNoteProps) {
       setShowModal(false);
       setNoteContent('');
       setSelectedProject('');
-      
+
       // Call the onSave callback if provided
       if (onSave) {
         onSave(noteContent, selectedProject);
@@ -121,8 +121,8 @@ export function FloatingNote({ onSave }: FloatingNoteProps) {
 
       {/* Note Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 dark:bg-black/70">
-          <div className="bg-white rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col dark:bg-dark-800">
+        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50 p-4 dark:bg-black/40">
+          <div className="bg-white/90 backdrop-blur-xl rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col dark:bg-dark-800/90 border border-white/20 dark:border-white/10 shadow-2xl">
             <div className="p-4 border-b border-slate-200 flex justify-between items-center dark:border-dark-700">
               <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200">Take a Note</h3>
               <button
@@ -148,7 +148,7 @@ export function FloatingNote({ onSave }: FloatingNoteProps) {
                   Assign to Project
                 </label>
                 <div className="relative">
-                  <select 
+                  <select
                     value={selectedProject}
                     onChange={(e) => setSelectedProject(e.target.value as unknown as Id<"projects"> | '')}
                     className="w-full p-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 appearance-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"

@@ -5,7 +5,7 @@ import { useState } from "react";
 export function ProfilePage({ onClose }: { onClose: () => void }) {
   const user = useQuery(api.auth.loggedInUser);
   const projects = useQuery(api.projects.list);
-  
+
   // Generate mock contribution data (in a real app, this would come from the backend)
   const [contributions] = useState(() => {
     const data = [];
@@ -40,8 +40,8 @@ export function ProfilePage({ onClose }: { onClose: () => void }) {
   const weeks = groupedContributions();
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 dark:bg-black/70">
-      <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto dark:bg-dark-800">
+    <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50 p-4 dark:bg-black/40">
+      <div className="bg-white/90 backdrop-blur-xl rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto dark:bg-dark-800/90 border border-white/20 dark:border-white/10 shadow-2xl">
         {/* Header */}
         <div className="p-6 border-b border-slate-200 dark:border-dark-700">
           <div className="flex justify-between items-center">
@@ -115,7 +115,7 @@ export function ProfilePage({ onClose }: { onClose: () => void }) {
                       if (day.count > 1) intensity = 'bg-blue-400 dark:bg-blue-500';
                       if (day.count > 2) intensity = 'bg-blue-500 dark:bg-blue-400';
                       if (day.count > 3) intensity = 'bg-blue-600 dark:bg-blue-300';
-                      
+
                       return (
                         <div
                           key={dayIndex}
@@ -162,7 +162,7 @@ export function ProfilePage({ onClose }: { onClose: () => void }) {
                   ></div>
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="bg-slate-50 rounded-lg p-4 dark:bg-dark-700">
                   <div className="text-2xl font-bold text-slate-800 dark:text-slate-100">
@@ -172,7 +172,7 @@ export function ProfilePage({ onClose }: { onClose: () => void }) {
                     Total Projects
                   </div>
                 </div>
-                
+
                 <div className="bg-slate-50 rounded-lg p-4 dark:bg-dark-700">
                   <div className="text-2xl font-bold text-slate-800 dark:text-slate-100">
                     {totalSteps}
@@ -181,7 +181,7 @@ export function ProfilePage({ onClose }: { onClose: () => void }) {
                     Total Steps
                   </div>
                 </div>
-                
+
                 <div className="bg-slate-50 rounded-lg p-4 dark:bg-dark-700">
                   <div className="text-2xl font-bold text-slate-800 dark:text-slate-100">
                     {completedSteps}

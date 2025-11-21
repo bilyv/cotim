@@ -50,7 +50,7 @@ const applicationTables = {
     acceptedAt: v.optional(v.number()),
   }).index("by_token", ["token"])
     .index("by_project", ["projectId"]),
-    
+
   notes: defineTable({
     projectId: v.id("projects"),
     content: v.string(),

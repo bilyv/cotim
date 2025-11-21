@@ -54,11 +54,11 @@ export function NotesList({ projectId }: NotesListProps) {
 
   const handleSaveEdit = async () => {
     if (!editingNoteId) return;
-    
+
     try {
-      await updateNote({ 
-        noteId: editingNoteId, 
-        content: editingContent 
+      await updateNote({
+        noteId: editingNoteId,
+        content: editingContent
       });
       setEditingNoteId(null);
       setEditingContent('');
@@ -113,16 +113,16 @@ export function NotesList({ projectId }: NotesListProps) {
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200">Project Notes ({notes.length})</h3>
-      
+
       <div className="space-y-3">
         {notes.map((note) => {
           const isExpanded = expandedNotes.has(note._id);
           const isLongContent = note.content.length > 150;
           const shouldTruncate = isLongContent && !isExpanded;
-          
+
           return (
-            <div 
-              key={note._id} 
+            <div
+              key={note._id}
               className="bg-slate-50 rounded-lg p-4 border border-slate-200 dark:bg-dark-700 dark:border-dark-600"
             >
               <div className="flex justify-between items-start mb-2">
@@ -150,11 +150,11 @@ export function NotesList({ projectId }: NotesListProps) {
                   </button>
                 </div>
               </div>
-              
+
               <div className="text-slate-700 dark:text-slate-300 whitespace-pre-wrap">
                 {shouldTruncate ? truncateContent(note.content) : note.content}
               </div>
-              
+
               {isLongContent && (
                 <button
                   onClick={() => toggleNoteExpansion(note._id)}
@@ -167,11 +167,11 @@ export function NotesList({ projectId }: NotesListProps) {
           );
         })}
       </div>
-      
+
       {/* Edit Note Modal */}
       {editingNoteId && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 dark:bg-black/70">
-          <div className="bg-white rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col dark:bg-dark-800">
+        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50 p-4 dark:bg-black/40">
+          <div className="bg-white/90 backdrop-blur-xl rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col dark:bg-dark-800/90 border border-white/20 dark:border-white/10 shadow-2xl">
             <div className="p-4 border-b border-slate-200 flex justify-between items-center dark:border-dark-700">
               <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200">Edit Note</h3>
               <button
