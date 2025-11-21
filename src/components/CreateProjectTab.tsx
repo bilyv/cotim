@@ -3,6 +3,7 @@ import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { toast } from "sonner";
 import { Id } from "../../convex/_generated/dataModel";
+import { triggerSuccessConfetti } from "../lib/confetti";
 
 const PROJECT_COLORS = [
   "#3b82f6", // blue
@@ -76,15 +77,15 @@ export function CreateProjectTab() {
       setDropTargetIndex(null);
       return;
     }
-    
+
     const newSteps = [...steps];
     const draggedStep = newSteps[draggedIndex];
-    
+
     // Remove the dragged item
     newSteps.splice(draggedIndex, 1);
     // Insert it at the new position
     newSteps.splice(targetIndex, 0, draggedStep);
-    
+
     setSteps(newSteps);
     setDraggedIndex(null);
     setDropTargetIndex(null);
@@ -133,7 +134,7 @@ export function CreateProjectTab() {
   const autoSaveSubtask = (stepIndex: number, subtaskIndex: number, value: string) => {
     // Update the subtask title in state
     handleSubtaskChange(stepIndex, subtaskIndex, value);
-    
+
     // In the project creation form, we don't save to the backend yet
     // The subtasks will be saved when the project is submitted
   };
@@ -205,6 +206,9 @@ export function CreateProjectTab() {
         }
       }
 
+      // Trigger confetti animation
+      triggerSuccessConfetti();
+
       toast.success("Project created successfully!");
       // Reset form
       setName("");
@@ -231,10 +235,10 @@ export function CreateProjectTab() {
     try {
       // Import the AI service dynamically to avoid issues with Vite
       const { generateProjectSteps } = await import("../lib/aiService");
-      
+
       // Generate steps using AI
       const aiSteps = await generateProjectSteps(name, description || "");
-      
+
       // Convert AI steps to our format
       const newSteps = aiSteps.map((aiStep) => ({
         title: aiStep.title,
@@ -244,7 +248,7 @@ export function CreateProjectTab() {
           isCompleted: false,
         })),
       }));
-      
+
       // Update the steps state
       setSteps(newSteps);
       toast.success(`Successfully generated ${newSteps.length} steps with AI!`);
@@ -259,7 +263,7 @@ export function CreateProjectTab() {
   return (
     <div className="bg-white dark:bg-dark-800 rounded-xl shadow-sm border border-slate-200 dark:border-dark-700 p-4 mb-4 md:mb-0">
       <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Create New Project</h2>
-      
+
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Project Name */}
         <div>
@@ -287,11 +291,10 @@ export function CreateProjectTab() {
                 key={color}
                 type="button"
                 onClick={() => setSelectedColor(color)}
-                className={`w-8 h-8 rounded-lg transition-all ${
-                  selectedColor === color
+                className={`w-8 h-8 rounded-lg transition-all ${selectedColor === color
                     ? "ring-2 ring-offset-1 ring-slate-400 dark:ring-slate-500"
                     : "hover:scale-105"
-                }`}
+                  }`}
                 style={{ backgroundColor: color }}
                 aria-label={`Select color ${color}`}
               />
@@ -369,22 +372,20 @@ export function CreateProjectTab() {
               )}
             </button>
           </div>
-          
+
           <div className="space-y-3 transition-all duration-300">
             {steps.map((step, index) => (
-              <div 
-                key={index} 
-                className={`border border-slate-200 dark:border-dark-700 rounded-lg p-3 transition-all duration-200 ease-in-out transform ${
-                  draggedIndex === index 
-                    ? "bg-blue-50 dark:bg-blue-900/20 opacity-50 scale-95 shadow-md" 
+              <div
+                key={index}
+                className={`border border-slate-200 dark:border-dark-700 rounded-lg p-3 transition-all duration-200 ease-in-out transform ${draggedIndex === index
+                    ? "bg-blue-50 dark:bg-blue-900/20 opacity-50 scale-95 shadow-md"
                     : dropTargetIndex === index && draggedIndex !== null
-                    ? "bg-blue-100 dark:bg-blue-900/30 scale-105 shadow-lg"
-                    : "bg-white dark:bg-dark-800"
-                } ${
-                  dropTargetIndex === index && draggedIndex !== null 
-                    ? "ring-2 ring-blue-500 ring-opacity-50" 
+                      ? "bg-blue-100 dark:bg-blue-900/30 scale-105 shadow-lg"
+                      : "bg-white dark:bg-dark-800"
+                  } ${dropTargetIndex === index && draggedIndex !== null
+                    ? "ring-2 ring-blue-500 ring-opacity-50"
                     : ""
-                }`}
+                  }`}
                 draggable
                 onDragStart={(e) => handleDragStart(e, index)}
                 onDragOver={(e) => handleDragOver(e, index)}
@@ -395,7 +396,7 @@ export function CreateProjectTab() {
                 <div className="flex justify-between items-start mb-2">
                   <div className="flex items-center gap-2">
                     {/* Drag Handle */}
-                    <div 
+                    <div
                       className="cursor-move p-1 rounded hover:bg-slate-100 dark:hover:bg-dark-700 transition-colors"
                       draggable
                       onDragStart={(e) => {
@@ -422,7 +423,7 @@ export function CreateProjectTab() {
                     </button>
                   )}
                 </div>
-                
+
                 <div className="space-y-2">
                   <div>
                     <label className="block text-xs font-medium text-slate-600 mb-1 dark:text-slate-400">
@@ -437,7 +438,7 @@ export function CreateProjectTab() {
                       required
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-xs font-medium text-slate-600 mb-1 dark:text-slate-400">
                       Description (Optional)
@@ -450,7 +451,7 @@ export function CreateProjectTab() {
                       className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:bg-dark-800 dark:border-dark-700 dark:text-white dark:placeholder-slate-500"
                     />
                   </div>
-                  
+
                   {/* Subtasks Section */}
                   <div className="border-t border-slate-200 dark:border-dark-700 pt-2 mt-2">
                     <div className="flex justify-between items-center mb-2">
@@ -463,7 +464,7 @@ export function CreateProjectTab() {
                         + Add Subtask
                       </button>
                     </div>
-                    
+
                     <div className="space-y-1">
                       {step.subtasks.map((subtask, subtaskIndex) => (
                         <div key={subtaskIndex} className="flex items-center gap-2">
@@ -491,7 +492,7 @@ export function CreateProjectTab() {
               </div>
             ))}
           </div>
-          
+
           {/* Add Another Step Button */}
           <div className="mt-4 pt-4 border-t border-slate-200 dark:border-dark-700">
             <button
@@ -535,7 +536,7 @@ export function CreateProjectTab() {
                 </svg>
               </button>
             </div>
-            
+
             {/* Editor Toolbar */}
             <div className="p-3 border-b border-slate-200 flex flex-wrap gap-1 dark:border-dark-700">
               <button
@@ -548,7 +549,7 @@ export function CreateProjectTab() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6h16M7 12h10m0 6H7" />
                 </svg>
               </button>
-              
+
               <button
                 type="button"
                 onClick={() => formatText('italic')}
@@ -559,7 +560,7 @@ export function CreateProjectTab() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 20l4-16m2 16l4-16M3 4h16" />
                 </svg>
               </button>
-              
+
               <button
                 type="button"
                 onClick={() => formatText('underline')}
@@ -570,9 +571,9 @@ export function CreateProjectTab() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                 </svg>
               </button>
-              
+
               <div className="w-px bg-slate-300 mx-1 my-1 dark:bg-dark-600"></div>
-              
+
               <button
                 type="button"
                 onClick={() => formatText('formatBlock', '<h1>')}
@@ -581,7 +582,7 @@ export function CreateProjectTab() {
               >
                 H1
               </button>
-              
+
               <button
                 type="button"
                 onClick={() => formatText('formatBlock', '<h2>')}
@@ -590,7 +591,7 @@ export function CreateProjectTab() {
               >
                 H2
               </button>
-              
+
               <button
                 type="button"
                 onClick={() => formatText('formatBlock', '<h3>')}
@@ -599,9 +600,9 @@ export function CreateProjectTab() {
               >
                 H3
               </button>
-              
+
               <div className="w-px bg-slate-300 mx-1 my-1 dark:bg-dark-600"></div>
-              
+
               <button
                 type="button"
                 onClick={() => formatText('insertUnorderedList')}
@@ -612,7 +613,7 @@ export function CreateProjectTab() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </button>
-              
+
               <button
                 type="button"
                 onClick={() => formatText('insertOrderedList')}
@@ -624,7 +625,7 @@ export function CreateProjectTab() {
                 </svg>
               </button>
             </div>
-            
+
             {/* Editor Content */}
             <div className="flex-1 p-4 overflow-y-auto">
               <div
@@ -637,7 +638,7 @@ export function CreateProjectTab() {
                 }}
               />
             </div>
-            
+
             {/* Modal Footer */}
             <div className="p-4 border-t border-slate-200 flex justify-end gap-3 dark:border-dark-700">
               <button

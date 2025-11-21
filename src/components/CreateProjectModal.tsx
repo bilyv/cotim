@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { toast } from "sonner";
+import { triggerSuccessConfetti } from "../lib/confetti";
 
 interface CreateProjectModalProps {
   onClose: () => void;
@@ -35,6 +36,10 @@ export function CreateProjectModal({ onClose }: CreateProjectModalProps) {
         name: name.trim(),
         color: selectedColor,
       });
+
+      // Trigger confetti animation
+      triggerSuccessConfetti();
+
       toast.success("Project created successfully!");
       onClose();
     } catch (error) {
@@ -84,11 +89,10 @@ export function CreateProjectModal({ onClose }: CreateProjectModalProps) {
                   key={color}
                   type="button"
                   onClick={() => setSelectedColor(color)}
-                  className={`w-8 h-8 rounded-lg transition-all ${
-                    selectedColor === color
-                      ? "ring-2 ring-offset-1 ring-slate-400 dark:ring-slate-500"
-                      : "hover:scale-105"
-                  }`}
+                  className={`w-8 h-8 rounded-lg transition-all ${selectedColor === color
+                    ? "ring-2 ring-offset-1 ring-slate-400 dark:ring-slate-500"
+                    : "hover:scale-105"
+                    }`}
                   style={{ backgroundColor: color }}
                   aria-label={`Select color ${color}`}
                 />
